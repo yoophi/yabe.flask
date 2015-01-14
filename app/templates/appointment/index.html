@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% from 'appointment/common.html' import detail %}
+{% block title %}Appointments{% endblock title %}
+
+{% block main %}
+<div>
+    {% for appt in appts %}
+    <div>
+        {{ detail(appt, link_title=true, show_edit=false, show_description=false) }}
+    </div>
+    {% else %}
+    <h3>No appointments</h3>
+    {% endfor %}
+</div>
+<hr />
+<div><a href="{{ url_for('appointment_create') }}">Add</a></div>
+{% endblock main %}

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% from 'appointment/common.html' import detail %}
+{% block title %}{{ appt.title or '(untitled)' }}{% endblock title %}
+{% block main %}
+<div>{{ detail(appt) }}</div>
+{% endblock main %}

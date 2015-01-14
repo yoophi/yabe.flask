@@ -1,0 +1,41 @@
+{% macro edit_field(field, catch_kwargs=true) %}
+<div>
+    {{ field.label(class="control-label") }}
+    <div class="controls">{{ field(**kwargs) }}</div>
+    {% for error in field.errors %}
+    <span>{{ error }} </span>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro detail(appt, link_title=false, show_edit=true, show_description=true) %}
+  <div>
+    {% if link_title %}
+      <h3><a href="{{ url_for('appointment_detail', appointment_id=appt.id) }}">{{ appt.title or '(untitled)' }}</a></h3>
+    {% else %}
+      <h3>{{ appt.title or '(untitled)' }}</h3>
+    {% endif %}
+    {% if appt.location %}<p>{{ appt.location }}</p>{% endif %}
+    {% if appt.allday %}
+      <p> {{ appt.start }}</p>
+    {% else %}
+      <p> {{ appt.start }} for {{ appt.duration }}</p>
+    {% endif %}
+    {% if show_edit %}
+    <div class="edit-controls">
+        
+        <a href="{{ url_for('appointment_edit', appointment_id=appt.id) }}">Edit</a>
+        <span class="inline-pad"></span>
+        
+        <a class="appointment-delete-link" href="#" data-delete-url="{{ url_for('appointment_delete', appointment_id=appt.id) }}">Delete</a>
+    </div>
+    {% endif %}
+    {% if show_description and appt.description %}
+    <div>
+        <p>
+          {{ appt.description }}
+        </p>
+    </div>
+    {% endif %}
+  </div>
+{% endmacro %}
