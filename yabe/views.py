@@ -1,22 +1,9 @@
 from flask import Flask, request, render_template, redirect, url_for, abort, jsonify, session
 from flask.ext.login import LoginManager, login_user, logout_user
+from form import AppointmentForm, LoginForm
 
-from sched.models import db, Appointment, User
-from sched.form import AppointmentForm, LoginForm
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sched.db'
-app.config['SECRET_KEY'] = 'enydM2ANhdcoKwdVa0jWvEsbPFuQpMjf'
-
-db.init_app(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+from . import app, db
+from .models import Appointment, User
 
 
 @app.route('/appointments/create/', methods=['GET', 'POST'])
@@ -95,23 +82,4 @@ def logout():
     return redirect(url_for('login'))
 
 
-if __name__ == '__main__':
-    #from datetime import timedelta
 
-    #from sqlalchemy import create_engine
-    ##from sqlalchemy.orm import sessionmaker
-    #
-    #engine = create_engine('sqlite:///sched.db', echo=True)
-    #
-    #from sched.app import app
-    #db.init_app(app)
-    db.create_all()
-    #print app
-
-    user = User(name='Pyunghyuk Yoo',
-                email='yoophi@gmail.com',
-                password='secret')
-    #Session = sessionmaker(bind=engine)
-    #session = Session()
-    db.session.add(user)
-    db.session.commit()

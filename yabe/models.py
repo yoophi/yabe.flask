@@ -2,9 +2,8 @@ from datetime import datetime
 from sqlalchemy.orm import synonym
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flask.ext.sqlalchemy import SQLAlchemy
+from . import db
 
-db = SQLAlchemy()
 
 class Appointment(db.Model):
     __tablename__ = 'appointment'
@@ -61,7 +60,7 @@ class User(db.Model):
     @classmethod
     def authenticate(cls, query, email, password):
         email = email.strip().lower()
-        user = cls.query.filter(cls.email==email).first()
+        user = cls.query.filter(cls.email == email).first()
         if user is None:
             return None, False
         if not user.active:
@@ -84,23 +83,3 @@ class User(db.Model):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
 
-#if __name__ == '__main__':
-#    #from datetime import timedelta
-#
-#    from sqlalchemy import create_engine
-#    #from sqlalchemy.orm import sessionmaker
-#
-#    engine = create_engine('sqlite:///sched.db', echo=True)
-#
-#    from sched.app import app
-#    db.init_app(app)
-#    db.create_all()
-#    print app
-#
-#    user = User(name='Pyunghyuk Yoo',
-#                email='yoophi@gmail.com',
-#                password='secret')
-#    #Session = sessionmaker(bind=engine)
-#    #session = Session()
-#    db.session.add(user)
-#    db.session.commit()
